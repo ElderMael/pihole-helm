@@ -9,6 +9,6 @@ metadata:
     release: {{ .Release.Name }}
 data:
   whitelist.txt: |
-{{ .Values.safelist | indent 2 }}
+{{ .Values.safelist | indent 4 }}
   adlist.list: |
-{{ .Values.adlist | indent 2 }}
+{{ .Values.adlist | indent 4 }}
