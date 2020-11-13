@@ -11,15 +11,11 @@ spec:
   selector:
     app: {{ template "fullname" . }}
   ports:
-    - name: 'webui'
+    - name: web
       protocol: TCP
       port: 80
       targetPort: 80
-    - name: 'dnstcp'
+    - name: dnsudp
       protocol: TCP
-      port: 53
-      targetPort: 53
-    - name: 'dnsudp'
-      protocol: UDP
       port: 53
       targetPort: 53
