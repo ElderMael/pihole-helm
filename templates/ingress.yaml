@@ -18,5 +18,4 @@ spec:
               service:
                 name: {{ template "fullname" . }}
                 port:
-                  name: http
-                  number: 80
+                  name: webui
