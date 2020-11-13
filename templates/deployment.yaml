@@ -48,6 +48,8 @@ spec:
           ports:
             - name: webui
               containerPort: 80
+            - name: securewebui
+              containerPort: 443
             - name: dns-tcp
               hostPort: 53
               protocol: TCP

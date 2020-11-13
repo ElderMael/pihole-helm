@@ -16,6 +16,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: {{ template "fullname" . }}
+                name: {{ template "fullname" . }}-web
                 port:
                   name: webui
