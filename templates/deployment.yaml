@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: {{ template "fullname" . }}
   labels:
-    chart: {{ .Chart.Name}}-{{ .Chart.Version | replace "+" "_" }}
+    chart: {{ .Chart.Name}}- {{ .Chart.Version | replace "+" "_" }}
     app: {{ template "fullname" . }}
     release: "{{ .Release.Name }}"
     heritage: "{{ .Release.Service }}"
@@ -18,39 +18,39 @@ spec:
         app: {{ template "fullname" . }}
     spec:
       hostAliases:
-      - ip: 127.0.0.1
-        hostnames:
-        - pi.hole
+        - ip: 127.0.0.1
+          hostnames:
+            - pi.hole
       containers:
-      - name: {{ .Chart.Name }}
-        image: "pihole/pihole:{{ .Values.image.version }}"
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
-        stdin: true
-        tty: true
-        resources:
-          limits:
-            memory: 1Gi
-        env:
-        - name: 'ServerIp'
-          value: '{{ .Values.config.serverIp }}'
-        - name: 'DNS1'
-          value: '{{ .Values.dns.firstDns }}'
-        - name: 'DNS2'
-          value: '{{ .Values.dns.secondDns }}'
-        - name: 'TZ'
-          value: {{ .Values.config.timezone }}
-        ports:
-        - name: webui
-          containerPort: 80
-        - name: dns-tcp
-          hostPort: 53
-          protocol: TCP 
-          containerPort: 53
-        - containerPort: 53
-          name: dns-udp
-          hostPort: 53
-          protocol: UDP
-        volumeMounts:
+        - name: {{ .Chart.Name }}
+          image: "pihole/pihole:{{ .Values.image.version }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          stdin: true
+          tty: true
+          resources:
+            limits:
+              memory: 1Gi
+          env:
+            - name: 'ServerIp'
+              value: '{{ .Values.config.serverIp }}'
+            - name: 'DNS1'
+              value: '{{ .Values.dns.firstDns }}'
+            - name: 'DNS2'
+              value: '{{ .Values.dns.secondDns }}'
+            - name: 'TZ'
+              value: {{ .Values.config.timezone }}
+          ports:
+            - name: webui
+              containerPort: 80
+            - name: dns-tcp
+              hostPort: 53
+              protocol: TCP
+              containerPort: 53
+            - containerPort: 53
+              name: dns-udp
+              hostPort: 53
+              protocol: UDP
+          volumeMounts:
             - mountPath: "/etc/pihole"
               name: {{ template "fullname" . }}-pvc
               subPath: "pihole"
