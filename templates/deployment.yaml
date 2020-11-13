@@ -17,10 +17,16 @@ spec:
       labels:
         app: {{ template "fullname" . }}
     spec:
+      dnsPolicy: "None"
+      dnsConfig:
+        nameservers:
+          - 127.0.0.1
+          - 1.1.1.1
       hostAliases:
         - ip: 127.0.0.1
           hostnames:
             - pi.hole
+            - elderserver
       containers:
         - name: {{ .Chart.Name }}
           image: "pihole/pihole:{{ .Values.image.version }}"
