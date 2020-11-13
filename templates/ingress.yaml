@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ template "fullname" . }}
@@ -9,17 +9,14 @@ metadata:
     heritage: {{ .Release.Service }}
 spec:
   rules:
-    - host: {{ .Values.ingress.host }} 
+    - host: {{ .Values.ingress.host }}
       http:
         paths:
-          - path: 
+          - path: /
+            pathType: Prefix
             backend:
-              serviceName: {{ template "fullname" . }}
-              servicePort: 81
-    - host: pi.hole
-      http:
-        paths:
-          - path: 
-            backend:
-              serviceName: {{ template "fullname" . }}
-              servicePort: 81
+              service:
+                name: {{ template "fullname" . }}
+                port:
+                  name: http
+                  number: 80

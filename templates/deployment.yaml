@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ template "fullname" . }}
@@ -14,16 +14,13 @@ spec:
       labels:
         app: {{ template "fullname" . }}
     spec:
-            # hostNetwork: true
       hostAliases:
       - ip: 127.0.0.1
         hostnames:
         - pi.hole
-      nodeSelector:
-        kubernetes.io/hostname: randomstore
       containers:
       - name: {{ .Chart.Name }}
-        image: pihole/pihole:4.0.0-1
+        image: "pihole/pihole:{{ .Values.image.version }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         stdin: true
         tty: true
@@ -31,36 +28,29 @@ spec:
           limits:
             memory: 1Gi
         env:
-        - name: 'ServerIP'
-          value: '0.0.0.0'
+        - name: 'ServerIp'
+          value: '{{ .Values.config.serverIp }}'
         - name: 'DNS1'
-          value: '8.8.8.8'
+          value: '{{ .Values.dns.firstDns }}'
         - name: 'DNS2'
-          value: '10.0.0.10'
+          value: '{{ .Values.dns.secondDns }}'
+        - name: 'TZ'
+          value: {{ .Values.config.timezone }}
         ports:
         - name: webui
-          containerPort: 81 
-        - name: dns1
+          containerPort: 80
+        - name: dns-tcp
           hostPort: 53
           protocol: TCP 
           containerPort: 53
         - containerPort: 53
-          name: dns2
+          name: dns-udp
           hostPort: 53
           protocol: UDP
-
-          # - name: {{ template "fullname" . }}-dns2
-          #   containerPort: 53
         volumeMounts:
             - mountPath: "/etc/pihole"
               name: {{ template "fullname" . }}-pvc
               subPath: "pihole"
-            - mountPath: "/etc/dnsmasq.d"
-              name: {{ template "fullname" . }}-pvc
-              subPath: "dnsmasq"
-            - mountPath: "/etc/dnsmasq.d/05-custom.conf"
-              name: {{ template "fullname" . }}-custom-config
-              subPath: 05-custom.conf
             - mountPath: "/etc/pihole/whitelist.txt"
               name: {{ template "fullname" . }}-custom-config-list
               subPath: whitelist.txt
@@ -68,12 +58,6 @@ spec:
               name: {{ template "fullname" . }}-custom-config-list
               subPath: adlists.list
       volumes:
-        - name: {{ template "fullname" . }}-custom-config
-          configMap:
-            name: {{ template "fullname" . }}-custom-config
-        - name: {{ template "fullname" . }}-custom-config-list
-          configMap:
-            name: {{ template "fullname" . }}-custom-config-list
         - name: {{ template "fullname" . }}-pvc
           persistentVolumeClaim:
             claimName: {{ template "fullname" . }}-pvc
