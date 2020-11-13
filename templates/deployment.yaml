@@ -64,3 +64,6 @@ spec:
         - name: {{ template "fullname" . }}-pvc
           persistentVolumeClaim:
             claimName: {{ template "fullname" . }}-pvc
+        - name: {{ template "fullname" . }}-custom-config-list
+          configMap:
+            name: {{ template "fullname" . }}-custom-config-list
