@@ -26,7 +26,8 @@ spec:
       hostAliases:
         - ip: 127.0.0.1
           hostnames:
-            - pi.hole
+            - '{{ .Values.ingress.host }}'
+            - elderserver
       containers:
         - name: {{ .Chart.Name }}
           image: "pihole/pihole:{{ .Values.image.version }}"
@@ -37,12 +38,8 @@ spec:
             limits:
               memory: 1Gi
           env:
-            - name: PIHOLE_HOSTNAME
-              valueFrom:
-                fieldRef:
-                  fieldPath: status.podIP
             - name: 'VIRTUAL_HOST'
-              value: ' {{ .Values.ingress.host }}'
+              value: '{{ .Values.ingress.host }}'
             - name: 'ServerIp'
               value: '{{ .Values.config.serverIp }}'
             - name: 'DNS1'
