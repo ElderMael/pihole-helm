@@ -4,23 +4,22 @@ metadata:
   name: {{ template "fullname" . }}
   labels:
     app: {{ template "fullname" . }}
-    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    chart: {{ .Chart.Name }}- {{ .Chart.Version | replace "+" "_" }}
     release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
 spec:
   type: LoadBalancer
   selector:
     app: {{ template "fullname" . }}
   ports:
-  - name: {{ template "fullname" . }}-webui
-    port: 80
-    targetPort: 80
-    protocol:   TCP
-  - name:       {{ template "fullname" . }}-dns-tcp
-    port: 53
-    targetPort: 53
-    protocol:   TCP
-  - name:       {{ template "fullname" . }}-dns-udp
-    port:       53
-    targetPort: 53
-    protocol:   UDP
+    - name: 'webUi'
+      protocol: TCP
+      port: 80
+      targetPort: 80
+    - name: 'dnsTcp'
+      protocol: TCP
+      port: 53
+      targetPort: 53
+    - name: 'dnsUdp'
+      protocol: UDP
+      port: 53
+      targetPort: 53
