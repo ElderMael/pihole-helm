@@ -20,13 +20,13 @@ spec:
       dnsPolicy: "None"
       dnsConfig:
         nameservers:
-          - 127.0.0.1
           - 1.1.1.1
+          - 1.0.0.1
+          - 8.8.8.8
       hostAliases:
         - ip: 127.0.0.1
           hostnames:
             - pi.hole
-            - elderserver
       containers:
         - name: {{ .Chart.Name }}
           image: "pihole/pihole:{{ .Values.image.version }}"
@@ -37,6 +37,8 @@ spec:
             limits:
               memory: 1Gi
           env:
+            - name: 'VirtualHost'
+              value: ' {{ .Values.ingress.host }}'
             - name: 'ServerIp'
               value: '{{ .Values.config.serverIp }}'
             - name: 'DNS1'
