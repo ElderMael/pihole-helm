@@ -9,9 +9,6 @@ persistence:
   storageClassName: microk8s-hostpath
 ingress:
   host: pi.hole
-configData: |-
-  server=/local/192.168.1.1
-  address=/.cminion.cf/192.168.1.132
 dns:
   firstDns: 1.1.1.1
   secondDns: 8.8.8.8
