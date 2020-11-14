@@ -22,8 +22,6 @@ serviceUDP:
   type: LoadBalancer
   annotations:
     traefik.ingress.kubernetes.io/affinity: "true"
-    traefik.ingress.kubernetes.io/session-cookie-name: "sticky"
-
 
 adlists:
   - 'https://raw.githubusercontent.com/PolishFiltersTeam/KADhosts/master/KADhosts_without_controversies.txt'
