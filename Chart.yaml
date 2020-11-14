@@ -1,7 +1,0 @@
-apiVersion: v2
-description: Pi Hole
-name: pihole
-icon: https://upload.wikimedia.org/wikipedia/commons/0/00/Pi-hole_Logo.png
-version: 1.0.0
-keywords:
-- DNS
