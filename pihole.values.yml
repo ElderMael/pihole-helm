@@ -1,5 +1,9 @@
 DNS1: 1.1.1.1
-DNS2: 8.8.8.8
+DNS2: 1.0.0.1
+
+persistentVolumeClaim:
+  enabled: true
+  size: 2Gi
 
 ingress:
   enabled: true
@@ -9,7 +13,7 @@ ingress:
     kubernetes.io/ingress.class: traefik
 
 serviceTCP:
-  type: LoadBalancer
+  type: ClusterIP
   annotations:
     traefik.ingress.kubernetes.io/affinity: "true"
     traefik.ingress.kubernetes.io/session-cookie-name: "sticky"
@@ -19,6 +23,7 @@ serviceUDP:
   annotations:
     traefik.ingress.kubernetes.io/affinity: "true"
     traefik.ingress.kubernetes.io/session-cookie-name: "sticky"
+
 
 adlists:
   - 'https://raw.githubusercontent.com/PolishFiltersTeam/KADhosts/master/KADhosts_without_controversies.txt'
