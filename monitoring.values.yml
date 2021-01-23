@@ -1,0 +1,55 @@
+grafana:
+  ingress:
+    enabled: true
+    hosts:
+      - grafana.hole
+    annotations:
+      kubernetes.io/ingress.class: traefik
+  sidecar:
+    dashboards:
+      enabled: true
+  persistence:
+    type: pvc
+    enabled: true
+    size: 3Gi
+  grafana.ini:
+    auth.anonymous:
+      enabled: true
+      org_name: Main Org.
+      org_role: Viewer
+    paths:
+      data: /var/lib/grafana/data
+      logs: /var/log/grafana
+      plugins: /var/lib/grafana/plugins
+      provisioning: /etc/grafana/provisioning
+      analytics:
+        check_for_updates: true
+      log:
+        mode: console
+      grafana_net:
+        url: https://grafana.net
+
+prometheus:
+  ingress:
+    enabled: true
+    hosts:
+      - prometheus.hole
+    annotations:
+      kubernetes.io/ingress.class: traefik
+  prometheusSpec:
+    additionalScrapeConfigs:
+      - job_name: co2
+        scrape_interval: 60s
+        static_configs:
+          - targets:
+            - 192.168.1.20:8080
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: local-path
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 5Gi
+alertmanager:
+  enabled: false
