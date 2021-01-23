@@ -3,7 +3,7 @@
 set -ex
 
 kubectl create namespace pihole || true
-kubectl create namespace prometheus || true
+kubectl create namespace monitoring || true
 
 helm repo add mojo2600 https://mojo2600.github.io/pihole-kubernetes/
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
@@ -18,8 +18,10 @@ helm upgrade \
   hole mojo2600/pihole \
   --set adminPassword="${PIHOLE_ADMIN_PASSWORD}"
 
+kubectl -n monitoring apply -f dashboards/co2.yml
+
 helm upgrade \
-  -n prometheus \
+  -n monitoring \
   --install  \
-  -f prometheus.values.yml \
-  co2 prometheus-community/prometheus
+  -f monitoring.values.yml \
+  co2 prometheus-community/kube-prometheus-stack

@@ -30,6 +30,12 @@ grafana:
         url: https://grafana.net
 
 prometheus:
+  tlsProxy:
+    enabled: false
+  admissionWebhooks:
+    enabled: false
+    patch:
+      enabled: false
   ingress:
     enabled: true
     hosts:
@@ -42,7 +48,7 @@ prometheus:
         scrape_interval: 60s
         static_configs:
           - targets:
-            - 192.168.1.20:8080
+            - 192.168.1.24:8080
     storageSpec:
       volumeClaimTemplate:
         spec:
