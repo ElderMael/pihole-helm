@@ -11,13 +11,13 @@ serviceDns:
   type: LoadBalancer
   externalTrafficPolicy: Local
   loadBalancerIP: ""
-  annotations: {}
+  annotations: { }
 
 serviceWeb:
   type: ClusterIP
   externalTrafficPolicy: Local
   loadBalancerIP: ""
-  annotations: {}
+  annotations: { }
 
 virtualHost: pi.hole
 
@@ -28,65 +28,60 @@ ingress:
   path: /
   hosts:
     - pi.hole
-  tls: []
+  tls: [ ]
 
 # Probes configuration
 probes:
   # probes.liveness -- Configure the healthcheck for the ingress controller
   liveness:
     enabled: true
-    initialDelaySeconds: 60
+    initialDelaySeconds: 900
     failureThreshold: 10
     timeoutSeconds: 5
   readiness:
     enabled: true
-    initialDelaySeconds: 60
+    initialDelaySeconds: 900
     failureThreshold: 3
     timeoutSeconds: 5
 
-resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #  cpu: 100m
-  #  memory: 128Mi
-  # requests:
-  #  cpu: 100m
-#  memory: 128Mi
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 200m
+    memory: 128Mi
 
 persistentVolumeClaim:
   # set to true to use pvc
-  enabled: false
+  enabled: enabled
+  size: 2Gi
   # set to true to use you own pvc
   # existingClaim: myExistingClaim
-  annotations: {}
-
   accessModes:
     - ReadWriteOnce
-  size: "500Mi"
+  annotations: { }
   ## If defined, storageClassName: <storageClass>
   ## If set to "-", storageClassName: "", which disables dynamic provisioning
   ## If undefined (the default) or set to null, no storageClassName spec is
   ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
   ##   GKE, AWS & OpenStack)
   ##
-  # storageClass: "-"
+  storageClass: "local-path"
 
   ## If subPath is set mount a sub folder of a volume instead of the root of the volume.
   ## This is especially handy for volume plugins that don't natively support sub mounting (like glusterfs).
 
   ## subPath: "pihole"
 
-nodeSelector: {}
+nodeSelector: { }
 
-tolerations: []
+tolerations: [ ]
 
-affinity: {}
+affinity: { }
 
 # Administrator password when not using an existing secret (see below)
-adminPassword: "admin"
+adminPassword: ""
 
 # Use an existing secret for the admin password.
 admin:
@@ -94,13 +89,13 @@ admin:
   passwordKey: "password"
 
 # extraEnvironmentVars is a list of extra enviroment variables to set for pihole to use
-extraEnvVars: {}
+extraEnvVars: { }
 # TZ: UTC
 
 # extraEnvVarsSecret is a list of secrets to load in as environment variables.
-extraEnvVarsSecret: {}
-  # env_var:
-  #   name: secret-name
+extraEnvVarsSecret: { }
+# env_var:
+#   name: secret-name
 #   key: secret-key
 
 # default upstream DNS servers to use
@@ -123,8 +118,8 @@ doh:
   repository: "crazymax/cloudflared"
   tag: latest
   pullPolicy: IfNotPresent
-  envVars: {}
-    # Here you can pass environment variables to the DoH container, for example:
+  envVars: { }
+  # Here you can pass environment variables to the DoH container, for example:
   # TUNNEL_DNS_UPSTREAM: "https://1.1.1.2/dns-query,https://1.0.0.2/dns-query"
 
   # Probes configuration
@@ -132,12 +127,12 @@ doh:
     # probes.liveness -- Configure the healthcheck for the doh container
     liveness:
       enabled: true
-      initialDelaySeconds: 60
+      initialDelaySeconds: 900
       failureThreshold: 10
       timeoutSeconds: 5
 
 dnsmasq:
-  upstreamServers: []
+  upstreamServers: [ ]
   # Here you can add upstream dns servers with. All lines will be added to the
   # pihole dnsmasq configuration.
   # The format should be like:
@@ -145,21 +140,21 @@ dnsmasq:
   # - server=/bar.foo/192.168.178.11
 
   customDnsEntries:
-  # Here you can add custom dns entries to override the
-  # dns resolution with. All lines will be added to the
-  # pihole dnsmasq configuration.
-  # The format should be like:
-  - address=/pi.hole/192.168.1.24
-  - address=/prometheus.hole/192.168.1.24
-  - address=/grafana.hole/192.168.1.24
+    # Here you can add custom dns entries to override the
+    # dns resolution with. All lines will be added to the
+    # pihole dnsmasq configuration.
+    # The format should be like:
+    - address=/pi.hole/192.168.1.24
+    - address=/prometheus.hole/192.168.1.24
+    - address=/grafana.hole/192.168.1.24
   # - address=/bar.foo/192.168.178.11
 
-  additionalHostsEntries: []
+  additionalHostsEntries: [ ]
   # Dnsmasq reads the /etc/hosts file to resolve ips. You can add additional entries if you like
   # - 192.168.0.3     host4
   # - 192.168.0.4     host5
 
-  staticDhcpEntries: []
+  staticDhcpEntries: [ ]
   # Static DHCP config
   # staticDhcpEntries:
   # - dhcp-host=MAC_ADDRESS,IP_ADDRESS,HOSTNAME
@@ -214,16 +209,16 @@ adlists:
   - 'https://raw.githubusercontent.com/HorusTeknoloji/TR-PhishingList/master/url-lists.txt'
   - 'https://zerodot1.gitlab.io/CoinBlockerLists/hosts_browser'
 
-whitelist: {}
-  # If you want to provide whitelisted domains, add them here.
+whitelist: { }
+# If you want to provide whitelisted domains, add them here.
 # - clients4.google.com
 
-blacklist: {}
-  # If you want to have special domains blacklisted, add them here
+blacklist: { }
+# If you want to have special domains blacklisted, add them here
 # - *.blackist.com
 
-regex: {}
-  # Add regular expression blacklist items
+regex: { }
+# Add regular expression blacklist items
 # - (^|\.)facebook\.com$
 
 
@@ -234,9 +229,9 @@ privileged: "false"
 
 customVolumes:
   enabled: false
-  config: {}
-    # any volume type can be used here
-    # hostPath:
+  config: { }
+  # any volume type can be used here
+  # hostPath:
   #   path: "/mnt/data"
 
 monitoring:
