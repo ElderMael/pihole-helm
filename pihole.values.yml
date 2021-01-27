@@ -35,27 +35,27 @@ probes:
   # probes.liveness -- Configure the healthcheck for the ingress controller
   liveness:
     enabled: true
-    initialDelaySeconds: 900
+    initialDelaySeconds: 60
     failureThreshold: 10
     timeoutSeconds: 5
   readiness:
     enabled: true
-    initialDelaySeconds: 900
+    initialDelaySeconds: 60
     failureThreshold: 3
     timeoutSeconds: 5
 
 resources:
   limits:
-    cpu: 500m
+    cpu: 1500m
     memory: 512Mi
   requests:
-    cpu: 200m
+    cpu: 500m
     memory: 128Mi
 
 persistentVolumeClaim:
   # set to true to use pvc
-  enabled: enabled
-  size: 2Gi
+  enabled: true
+  size: 4Gi
   # set to true to use you own pvc
   # existingClaim: myExistingClaim
   accessModes:
@@ -113,7 +113,7 @@ antiaff:
 
 doh:
   # set to true to enabled DNS over HTTPs via cloudflared
-  enabled: enabled
+  enabled: true
   name: "cloudflared"
   repository: "crazymax/cloudflared"
   tag: latest
@@ -127,7 +127,7 @@ doh:
     # probes.liveness -- Configure the healthcheck for the doh container
     liveness:
       enabled: true
-      initialDelaySeconds: 900
+      initialDelaySeconds: 60
       failureThreshold: 10
       timeoutSeconds: 5
 
