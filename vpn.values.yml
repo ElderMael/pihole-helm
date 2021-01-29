@@ -1,0 +1,8 @@
+automatic:
+  enabled: true
+  externalHostname: vpn.eldermael.io
+  persistence:
+    size: "4Gi"
+image:
+  repository: ixdotai/openvpn
+  tag: 0.2.1

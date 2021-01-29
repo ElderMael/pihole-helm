@@ -5,11 +5,12 @@ set -ex
 kubectl create namespace pihole || true
 kubectl create namespace monitoring || true
 kubectl create namespace plex || true
+kubectl create namespace ovpn || true
 
 helm repo add mojo2600 https://mojo2600.github.io/pihole-kubernetes/
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo add k8s-at-home https://k8s-at-home.com/charts/
-
+helm repo add suda https://suda.github.io/charts/
 
 helm repo update
 
@@ -33,3 +34,10 @@ helm upgrade \
   --install  \
   -f plex.values.yml \
   plex k8s-at-home/plex
+
+helm upgrade \
+  -n ovpn \
+  --install \
+  -f vpn.values.yml \
+  --timeout 15m \
+  vpn suda/personal-ovpn
