@@ -147,6 +147,7 @@ dnsmasq:
     - address=/pi.hole/192.168.1.24
     - address=/prometheus.hole/192.168.1.24
     - address=/grafana.hole/192.168.1.24
+    - address=/plex.hole/192.168.1.24
   # - address=/bar.foo/192.168.178.11
 
   additionalHostsEntries: [ ]
