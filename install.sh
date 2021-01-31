@@ -6,6 +6,7 @@ kubectl create namespace pihole || true
 kubectl create namespace monitoring || true
 kubectl create namespace plex || true
 kubectl create namespace ovpn || true
+kubectl create namespace nas || true
 
 helm repo add mojo2600 https://mojo2600.github.io/pihole-kubernetes/
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
